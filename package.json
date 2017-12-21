@@ -1,0 +1,21 @@
+{
+  "name": "ejs2810",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/vanpho93/ejs2810.git",
+  "author": "Van Pho Nguyen <vanpho02@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "mongoose": "^4.13.6",
+    "multer": "^1.3.0",
+    "uid": "^0.0.2"
+  },
+  "devDependencies": {
+    "reload": "^2.2.2"
+  },
+  "scripts": {
+    "server": "nodemon index.js -e ejs,js"
+  }
+}

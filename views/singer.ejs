@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <title>Document</title>
+</head>
+<body style="padding: 10px;">
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>English</th>
+            <th>Vietnamese</th>
+            <th>Modify</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% singers.forEach((singer, index)=> { %>
+            <tr>
+                <td><%= index + 1 %></td>
+                <td><%= singer.name %></td>
+                <td>
+                    <img src="<%= singer.image %>" alt="<%= singer.name %>" />
+                </td>
+                <td>
+                    <a href="/remove/<%= singer._id %>">Remove</a>
+                    <br>
+                    <a href="/update/<%= singer._id %>">Update</a>
+                </td>
+              </tr>
+          <% }) %>
+        </tbody>
+      </table>
+      <a href="/add">Add new singer</a>
+</body>
+</html>
