@@ -1,6 +1,5 @@
 const express = require('express');
 const reload = require('reload');
-const upload = require('./uploadConfig');
 const Singer = require('./db');
 
 const app = express();
@@ -12,6 +11,12 @@ app.get('/', (req, res) => res.redirect('/singer'));
 app.get('/singer', (req, res) => {
     Singer.find({})
     .then(singers => res.render('singer', { singers }));
+});
+
+app.get('/add', (req, res) => res.render('add'));
+
+app.post('/singer', (req, res) => {
+
 });
 
 app.listen(3000, () => console.log('Server started'));
