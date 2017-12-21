@@ -8,11 +8,12 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     </head>
     <body>
-        <form action="/update" method="POST" enctype="multipart/form-data">
-            <input type="text" placeholder="Name" name="name" value="Bao Thi">
+        <form action="/update/<%= singer._id %>" method="POST" enctype="multipart/form-data">
+            <input type="text" placeholder="Name" name="name" value="<%= singer.name %>">
             <br><br>
             <input type="file" name="image">
-            <img src="1.jpg" alt="">
+            <input type="hidden" name="<%= singer.image %>">
+            <img src="<%= singer.image %>" alt="">
             <br><br>
             <button>Update singer</button>
         </form>

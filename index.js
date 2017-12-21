@@ -1,8 +1,11 @@
 const express = require('express');
+const fs = require('fs');
 const reload = require('reload');
+
 const Singer = require('./db');
 const uploadConfig = require('./uploadConfig');
 
+const uploadSingle = uploadConfig.single('image');
 const app = express();
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
@@ -19,15 +22,33 @@ app.get('/add', (req, res) => res.render('add'));
 app.get('/remove/:id', (req, res) => {
     const { id } = req.params;
     Singer.findByIdAndRemove(id)
-    .then(() => res.redirect('/singer'))
+    .then(singer => {
+        fs.unlinkSync(`./public/${singer.image}`);
+        res.redirect('/singer');
+    })
     .catch(err => res.send(err));
 });
 
 app.get('/update/:id', (req, res) => {
-    res.render('update');
+    Singer.findById(req.params.id)
+    .then(singer => res.render('update', { singer }))
+    .catch(err => res.send(err));
 });
 
-const uploadSingle = uploadConfig.single('image');
+app.post('/update/:id', (req, res) => {
+    const { id } = req.params;
+    uploadSingle(req, res, err => {
+        if (err) return res.send(err);
+        const { name } = req.body;
+        const updateObj = req.file ? { name, image: req.file.filename } : { name };
+        Singer.findByIdAndUpdate(id, updateObj)
+        .then(singer => {
+            if (req.file) fs.unlinkSync(`./public/${singer.image}`);
+            res.redirect('/singer');
+        })
+        .catch(err => res.send(err));
+    });
+});
 
 app.post('/singer', (req, res) => {
     uploadSingle(req, res, err => {
