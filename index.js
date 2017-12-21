@@ -16,6 +16,17 @@ app.get('/singer', (req, res) => {
 
 app.get('/add', (req, res) => res.render('add'));
 
+app.get('/remove/:id', (req, res) => {
+    const { id } = req.params;
+    Singer.findByIdAndRemove(id)
+    .then(() => res.redirect('/singer'))
+    .catch(err => res.send(err));
+});
+
+app.get('/update/:id', (req, res) => {
+    res.render('update');
+});
+
 const uploadSingle = uploadConfig.single('image');
 
 app.post('/singer', (req, res) => {
@@ -31,8 +42,6 @@ app.post('/singer', (req, res) => {
 app.listen(3000, () => console.log('Server started'));
 
 reload(app);
-
-
 
 /*
 1. Save hinh, lay duoc ten hinh, ten singer
