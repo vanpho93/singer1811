@@ -1,6 +1,7 @@
 const express = require('express');
 const reload = require('reload');
 const Singer = require('./db');
+const uploadConfig = require('./uploadConfig');
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -15,17 +16,26 @@ app.get('/singer', (req, res) => {
 
 app.get('/add', (req, res) => res.render('add'));
 
-app.post('/singer', (req, res) => {
+const uploadSingle = uploadConfig.single('image');
 
+app.post('/singer', (req, res) => {
+    uploadSingle(req, res, err => {
+        if (err) return res.send(err);
+        const singer = new Singer({ name: req.body.name, image: req.file.filename })
+        singer.save()
+        .then(() => res.redirect('/singer'))
+        .catch(err => res.send(err));
+    });
 });
 
 app.listen(3000, () => console.log('Server started'));
 
 reload(app);
 
+
+
 /*
-db.getCollection('singers').insertMany([
-    { name: 'Bao Thy', image: '1.jpg' },
-    { name: 'Soobin', image: '2.jpg' },
-])
+1. Save hinh, lay duoc ten hinh, ten singer
+2. Add singer vao database ->
+    const singer = new Singer({  }); singer.save() -> Promise
 */
